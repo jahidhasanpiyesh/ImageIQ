@@ -11,9 +11,16 @@
     <title>Photo Uploader</title>
   </head>
   <body>
-    <h1>Photo Uploader</h1>
-
-    {{form}}
+    <div class = "container">
+      <div class = "py-5 text-center bg-secondary text-white">
+        <h1 class = "mb-3">Photo Uploader</h1>
+        <form action="" method="post">
+          {%csrf_token%}
+          {{form}}
+          <input type="submit" class = "btn btn-danger" value="Upload">
+        </form>
+      </div>
+    </div>
 
     <!-- Optional JavaScript; choose one of the two! -->
 
