@@ -15,7 +15,7 @@
       <div class = "py-5 text-center bg-secondary text-white">
         <h1 class = "mb-3">Photo Uploader</h1>
         <form action="" method="post" enctype="multipart/form-data">
-          {%csrf_token%}
+          {% csrf_token %}
           {{form}}
           <input type="submit" class = "btn btn-danger" value="Upload">
         </form>
