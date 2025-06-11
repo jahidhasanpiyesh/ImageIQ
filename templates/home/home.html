@@ -29,13 +29,15 @@
       <div class="py-5 text-center bg-secondary text-white">
         <h1 class="mb-3">Photo Uploader</h1>
 
-        <!-- Sign Up Button aligned to right -->
-          <div class="position-absolute" style="top: 20px; right: 100px;">
-            <a href="{% url 'signup' %}" class="btn btn-outline-light btn-sm">
-              Sign Up
-            </a>
-          </div>
-        <!-- End of Sign Up Button -->
+        <!-- Slightly Left-Aligned Sign-Up Button -->
+        <div class="position-fixed top-0 end-0 pe-5 pt-3" style="z-index: 1050;">
+          <a href="{% url 'signup' %}" class="btn btn-outline-light btn-sm">
+            Sign Up
+          </a>
+        </div>
+
+
+
          
         <form action="" method="post" enctype="multipart/form-data" class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
           {% csrf_token %}
