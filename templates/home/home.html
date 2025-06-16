@@ -28,7 +28,10 @@
     <!-- Full Page Container -->
     <div class="container position-relative">
       <!-- Sign-Up Button (fixed top-right inside container) -->
-      <div class="position-absolute" style="top: 20px; right: 20px; z-index: 1050;">
+      <div
+        class="position-absolute"
+        style="top: 20px; right: 20px; z-index: 1050"
+      >
         <a href="{% url 'signup' %}" class="btn btn-outline-light btn-sm">
           Sign Up
         </a>
@@ -43,8 +46,7 @@
           enctype="multipart/form-data"
           class="d-flex justify-content-center align-items-center gap-2 flex-wrap"
         >
-          {% csrf_token %}
-          {{ form }}
+          {% csrf_token %} {{ form }}
           <input type="submit" class="btn btn-danger" value="Upload" />
         </form>
       </div>
@@ -58,7 +60,7 @@
               src="{{ x.photo.url }}"
               alt="Uploaded Photo"
               class="card-img-top"
-              style="object-fit: cover; height: 200px;"
+              style="object-fit: cover; height: 200px"
             />
             <div class="card-footer">
               <small class="text-muted">{{ x.date }}</small>
