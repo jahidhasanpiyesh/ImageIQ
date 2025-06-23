@@ -1,32 +1,28 @@
-{% block login_template %}
-{% block title %}
+{% block login_template %} {% block title %}
 <!-- Page title -->
 <title>Signup-User</title>
-{% endblock %}
-
-{% block user %}
+{% endblock %} {% block user %}
 <!-- Signup Form Section -->
-    <div class="registration form">
-        <header>Signup</header>
-        <form action="#">
-            <!-- Email Input -->
-            <input type="text" placeholder="Enter your email">
-            <!-- Create Password -->
-            <input type="password" placeholder="Create a password">
-            <!-- Confirm Password -->
-            <input type="password" placeholder="Confirm your password">
-            <!-- Signup Button -->
-            <input type="button" class="button" value="Signup">
-        </form>
+<div class="registration form">
+  <header>Signup</header>
+  <form action="#">
+    <!-- Email Input -->
+    <input type="text" placeholder="Enter your email" />
+    <!-- Create Password -->
+    <input type="password" placeholder="Create a password" />
+    <!-- Confirm Password -->
+    <input type="password" placeholder="Confirm your password" />
+    <!-- Signup Button -->
+    <input type="button" class="button" value="Signup" />
+  </form>
 
-        <!-- Link to toggle back to Login form -->
-        <div class="signup">
-            <span class="signup">
-                Already have an account?
-                <!-- This label triggers the checkbox to show the login form -->
-                <label for="check">Login</label>
-            </span>
-        </div>
-    </div>
-{% endblock %}
-{% endblock %}
+  <!-- Link to toggle back to Login form -->
+  <div class="signup">
+    <span class="signup">
+      Already have an account?
+      <!-- This label triggers the checkbox to show the login form -->
+      <label for="check">Login</label>
+    </span>
+  </div>
+</div>
+{% endblock %} {% endblock %}
