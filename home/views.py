@@ -4,7 +4,6 @@ from .models import Image
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import SignUpForm
 # Create your views here.
 def home(req):
     if req.method == 'POST':

@@ -1,28 +1,47 @@
-{% block login_template %} {% block title %}
+{% extends 'home/home.html' %} {% load static %} {% block link %}
+<!-- Linking external CSS for styling -->
+<link rel="stylesheet" href="{% static 'home/signup.css' %}" />
+{% endblock %} {% block title %}
 <!-- Page title -->
 <title>Signup-User</title>
-{% endblock %} {% block user %}
-<!-- Signup Form Section -->
-<div class="registration form">
-  <header>Signup</header>
-  <form action="#">
-    <!-- Email Input -->
-    <input type="text" placeholder="Enter your email" />
-    <!-- Create Password -->
-    <input type="password" placeholder="Create a password" />
-    <!-- Confirm Password -->
-    <input type="password" placeholder="Confirm your password" />
-    <!-- Signup Button -->
-    <input type="button" class="button" value="Signup" />
-  </form>
-
-  <!-- Link to toggle back to Login form -->
-  <div class="signup">
-    <span class="signup">
-      Already have an account?
-      <!-- This label triggers the checkbox to show the login form -->
-      <label for="check">Login</label>
-    </span>
+{% endblock %} {% block body %}
+<!-- Main container for login and registration forms -->
+<div class="container">
+  <!-- Back to Home Button (visible to guide users back) -->
+  <div style="margin: 20px 0">
+    <a href="{% url 'home' %}" class="btn btn-secondary">&larr; Back to Home</a>
   </div>
+
+  {% block user %}
+  <!-- Hidden checkbox for toggling between login and signup forms -->
+  <input type="checkbox" id="check" />
+
+  <!-- Signup Form Section -->
+  <div class="registration form">
+    <header>Signup</header>
+    <form action="#">
+      <!-- Email Input -->
+      <input type="text" placeholder="Enter your email" />
+      <!-- Create Password -->
+      <input type="password" placeholder="Create a password" />
+      <!-- Confirm Password -->
+      <input type="password" placeholder="Confirm your password" />
+      <!-- Signup Button -->
+      <input type="button" class="button" value="Signup" />
+    </form>
+
+    <!-- Link to toggle back to Login form -->
+    <div class="signup">
+      <span class="signup">
+        Already have an account?
+        <!-- This label triggers the checkbox to show the login form -->
+        <a href="{% url 'login' %}"><label for="check">Login</label></a>
+      </span>
+    </div>
+  </div>
+  {% endblock %}
 </div>
-{% endblock %} {% endblock %}
+
+<!-- Linking JavaScript file (if required for toggle/animation logic) -->
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

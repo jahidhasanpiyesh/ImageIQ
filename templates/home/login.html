@@ -19,7 +19,7 @@
     <a href="{% url 'home' %}" class="btn btn-secondary">&larr; Back to Home</a>
   </div>
 
-  {% block user %}
+{% block user %}
   <!-- Hidden checkbox for toggling between login and signup forms -->
   <input type="checkbox" id="check" />
 
@@ -46,7 +46,7 @@
       </span>
     </div>
   </div>
-  {% endblock %}
+{% endblock %}
 </div>
 
 <!-- Linking JavaScript file (if required for toggle/animation logic) -->
