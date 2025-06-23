@@ -17,31 +17,8 @@ def home(req):
     return render(req, 'home/home.html', {'img':img, 'form': form}) 
 
 def login(req):
-    if req.method == 'POST':
-        email = req.POST.get('email')
-        password = req.POST.get('password')
-        user = authenticate(username=email, password=password)
-        if user:
-            auth_login(req, user)
-            return redirect('home')
-        else:
-            messages.error(req, "Invalid email or password")
-
     return render(req, 'home/login.html')
 
 def signup(req):
-    if req.method == 'POST':
-        form = SignUpForm(req.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data["password1"])
-            user.username = form.cleaned_data["email"]
-            user.save()
-            messages.success(req, "Account created successfully")
-            return redirect('login')
-        else:
-            messages.error(req, "Signup failed. Please fix the errors below.")
-    else:
-        form = SignUpForm()
-    return render(req, 'home/signup.html', {'form': form})
+    return render(req, 'home/signup.html')
     
