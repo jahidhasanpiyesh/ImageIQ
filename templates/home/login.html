@@ -1,4 +1,5 @@
-{% extends 'home/home.html' %} {% load static %} {% block link %}
+{% block login_template %} {% extends 'home/home.html' %} {% load static %} {%
+block link %}
 <!-- Linking external CSS for styling -->
 <link rel="stylesheet" href="{% static 'home/signup.css' %}" />
 {% endblock %} {% block title %}
@@ -47,4 +48,4 @@
 
 <!-- Linking JavaScript file (if required for toggle/animation logic) -->
 <script src="{% static 'js/script.js' %}"></script>
-{% endblock %}
+{% endblock %} {% endblock %}
