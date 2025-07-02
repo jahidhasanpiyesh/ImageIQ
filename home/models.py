@@ -1,20 +1,12 @@
-# home/models.py
 from django.db import models
-
-class Category(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-    class Meta:
-        verbose_name_plural = "Categories"
-
-    def __str__(self):
-        return self.name
-
+from django.contrib.auth.models import User
 
 class Image(models.Model):
-    photo = models.ImageField(upload_to='myimages')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
+    user      = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    photo     = models.ImageField(upload_to='myimages/')
+    caption   = models.CharField(max_length=255, blank=True)
+    keywords  = models.CharField(max_length=255, help_text="Comma‑separated keywords (e.g. computer,laptop)")
+    date      = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.category.name} - {self.photo.name}"
+        return f"{self.user} – {self.photo.name}"

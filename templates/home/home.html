@@ -29,7 +29,6 @@
 
       <!-- Sign-Up Button (fixed top-right inside container) -->
        {% if request.user.is_authenticated %}
-
        <div
         class="position-absolute"
         style="top: 20px; right: 20px; z-index: 1050">
@@ -58,15 +57,41 @@
           enctype="multipart/form-data"
           class="d-flex justify-content-center align-items-center gap-2 flex-wrap"
         >
-          {% csrf_token %} {{ form }}
+          {% csrf_token %}
+          {# Manually render form fields for better control & styling #}
+          <input
+            type="file"
+            name="photo"
+            class="form-control"
+            required
+          />
+          <input
+            type="text"
+            name="caption"
+            placeholder="Caption (optional)"
+            class="form-control"
+          />
+          <input
+            type="text"
+            name="keywords"
+            placeholder="Keywords (optional)"
+            class="form-control"
+          />
           <input type="submit" class="btn btn-danger" value="Upload" />
         </form>
 
         {% else %}
         <!-- Search Form -->
         <form method="get" class="mb-4 d-flex justify-content-center align-items-center gap-2 flex-wrap">
-          <input type="text" name="q" placeholder="Search by name or title" class="form-control" style="max-width: 300px;" value="">
-          <input type="submit" value="Search" class="btn btn-primary">
+          <input
+            type="text"
+            name="search"
+            placeholder="Search by name or title"
+            class="form-control"
+            style="max-width: 300px;"
+            value="{{ search_query }}"
+          />
+          <input type="submit" value="Search" class="btn btn-primary" />
         </form>
         
         {% endif %}

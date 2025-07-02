@@ -1,60 +1,84 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.db.models import Q
+
 from .forms import ImageForm
 from .models import Image
-# Create your views here.
-def home(req):
-    if req.method == 'POST':
-        form = ImageForm(req.POST, req.FILES) # Create an instance of ImageForm with POST data and files.
-        # If the form is valid, save the data to the database.
-        if form.is_valid():
-            form.save()
-    form = ImageForm() # Create a new instance of ImageForm for the empty form.
-    img = Image.objects.all() # Fetch all Image objects from the database.
-    return render(req, 'home/home.html', {'img':img, 'form': form}) 
 
 
-def login_view(req):
-    if req.method == 'POST':
-        username = req.POST.get('username')
-        password = req.POST.get('password')
-
-        user = authenticate(req, username=username, password=password)
-        if user is not None:
-            login(req, user)
-            return redirect('home')
-        else:
-            messages.error(req, 'Invalid username or password!')
+# ---------------- Home: Upload + Search ----------------
+def home(request):
+    # ---- Upload ----
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            messages.error(request, 'Log in first!')
             return redirect('login')
-    
-    return render(req, 'home/login.html')
+
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            img = form.save(commit=False)
+            img.user = request.user
+            img.save()
+            messages.success(request, 'Image uploaded!')
+            return redirect('home')
+    else:
+        form = ImageForm()
+
+    # ---- Search ----
+    query = request.GET.get('search', '').strip()
+    if query:
+        images = Image.objects.filter(
+            Q(keywords__icontains=query) |
+            Q(caption__icontains=query)
+        ).order_by('-date')
+    else:
+        images = Image.objects.all().order_by('-date')
+
+    return render(request, 'home/home.html',
+                  {'form': form, 'img': images, 'search_query': query})
 
 
-def signup(req):
-    if req.method == 'POST':
-        username = req.POST.get('username')
-        email = req.POST.get('email')
-        pass1 = req.POST.get('password1')
-        pass2 = req.POST.get('password2')
-
-        if pass1 != pass2:
-            messages.error(req, 'Passwords do not match!')
-            return redirect('signup')
-
-        if User.objects.filter(username=username).exists():
-            messages.error(req, 'Username already taken!')
-            return redirect('signup')
-
-        my_user = User.objects.create_user(username=username, email=email, password=pass1)
-        my_user.save()
-        messages.success(req, 'Account created successfully!')
+# ---------------- Auth: Login ----------------
+def login_view(request):
+    if request.method == 'POST':
+        user = authenticate(
+            request,
+            username=request.POST.get('username'),
+            password=request.POST.get('password')
+        )
+        if user:
+            login(request, user)
+            return redirect('home')
+        messages.error(request, 'Invalid credentials')
         return redirect('login')
-    
-    return render(req, 'home/signup.html')
+    return render(request, 'home/login.html')
 
-def logout_view(req):
-    logout(req)
-    messages.success(req, 'Logged out successfully!')
+
+# ---------------- Auth: Signup ----------------
+def signup(request):
+    if request.method == 'POST':
+        u  = request.POST.get('username')
+        p1 = request.POST.get('password1')
+        p2 = request.POST.get('password2')
+
+        if p1 != p2:
+            messages.error(request, 'Passwords do not match!')
+            return redirect('signup')
+        if User.objects.filter(username=u).exists():
+            messages.error(request, 'Username already taken!')
+            return redirect('signup')
+
+        User.objects.create_user(username=u, password=p1)
+        messages.success(request, 'Account created! Please log in.')
+        return redirect('login')
+
+    return render(request, 'home/signup.html')
+
+
+# ---------------- Auth: Logout ----------------
+def logout_view(request):
+    logout(request)
+    messages.success(request, 'Logged out')
     return redirect('login')
