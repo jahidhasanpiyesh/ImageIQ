@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
+import re                        # ← regex সার্চের জন্য
 
 from .forms import ImageForm
 from .models import Image
@@ -27,17 +28,25 @@ def home(request):
         form = ImageForm()
 
     # ---- Search ----
-    query = request.GET.get('search', '').strip()
+    query_raw = request.GET.get('search', '')
+    query = query_raw.strip()
+
     if query:
+        # word‑boundary regex: exact keyword match within comma‑separated list
+        regex = r'\b{}\b'.format(re.escape(query))
         images = Image.objects.filter(
-            Q(keywords__icontains=query) |
-            Q(caption__icontains=query)
+            Q(keywords__iregex=regex) |    # keywords ক্ষেত্র
+            Q(caption__icontains=query)    # caption ক্ষেত্র
         ).order_by('-date')
     else:
         images = Image.objects.all().order_by('-date')
 
-    return render(request, 'home/home.html',
-                  {'form': form, 'img': images, 'search_query': query})
+    context = {
+        'form': form,
+        'img': images,
+        'search_query': query_raw,
+    }
+    return render(request, 'home/home.html', context)
 
 
 # ---------------- Auth: Login ----------------
@@ -59,18 +68,19 @@ def login_view(request):
 # ---------------- Auth: Signup ----------------
 def signup(request):
     if request.method == 'POST':
-        u  = request.POST.get('username')
-        p1 = request.POST.get('password1')
-        p2 = request.POST.get('password2')
+        username = request.POST.get('username')
+        pass1    = request.POST.get('password1')
+        pass2    = request.POST.get('password2')
 
-        if p1 != p2:
+        if pass1 != pass2:
             messages.error(request, 'Passwords do not match!')
             return redirect('signup')
-        if User.objects.filter(username=u).exists():
+
+        if User.objects.filter(username=username).exists():
             messages.error(request, 'Username already taken!')
             return redirect('signup')
 
-        User.objects.create_user(username=u, password=p1)
+        User.objects.create_user(username=username, password=pass1)
         messages.success(request, 'Account created! Please log in.')
         return redirect('login')
 
