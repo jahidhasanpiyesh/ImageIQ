@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -14,134 +13,102 @@
       crossorigin="anonymous"
     />
 
-    <!-- Custom CSS -->
     {% block link %}{% endblock %}
-
-    <!-- Page Title -->
-    {% block title %}
-    <title>Photo Uploader</title>
-    {% endblock %}
+    {% block title %}<title>Photo Uploader</title>{% endblock %}
   </head>
 
   {% block body %}
   <body>
-    <!-- Full Page Container -->
     <div class="container position-relative">
-      <!-- Sign-Up Button (fixed top-right inside container) -->
+
+      <!-- Auth button (top‑right) -->
       {% if request.user.is_authenticated %}
-      <div
-        class="position-absolute"
-        style="top: 20px; right: 20px; z-index: 1050"
-      >
-        <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm">
-          Log Out
+        <a href="{% url 'logout' %}"
+           class="btn btn-outline-light btn-sm position-absolute"
+           style="top:20px; right:20px; z-index:1050">
+          Log Out
         </a>
-      </div>
       {% else %}
-      <div
-        class="position-absolute"
-        style="top: 20px; right: 20px; z-index: 1050"
-      >
-        <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm">
-          Sign-Up
+        <a href="{% url 'login' %}"
+           class="btn btn-outline-light btn-sm position-absolute"
+           style="top:20px; right:20px; z-index:1050">
+          Sign Up
         </a>
-      </div>
       {% endif %}
 
-      <!-- Uploader Section -->
+      <!-- Header / Upload / Search -->
       <div class="py-5 text-center bg-secondary text-white rounded">
         <h1 class="mb-3">Photo Uploader</h1>
 
         {% if request.user.is_authenticated %}
-        <form
-          action=""
-          method="post"
-          enctype="multipart/form-data"
-          class="d-flex justify-content-center align-items-center gap-2 flex-wrap"
-        >
-          {% csrf_token %}
-          <input
-            type="file"
-            name="photo"
-            class="form-control"
-            style="max-width: 200px"
-            required
-          />
-          <input
-            type="text"
-            name="caption"
-            placeholder="Caption (optional)"
-            class="form-control"
-            style="max-width: 250px"
-          />
-          <input
-            type="text"
-            name="keywords"
-            placeholder="Keywords (optional)"
-            class="form-control"
-            style="max-width: 250px"
-          />
-          <input type="submit" class="btn btn-danger" value="Upload" />
-        </form>
+          <!-- Upload form -->
+          <form method="post" enctype="multipart/form-data"
+                class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
+            {% csrf_token %}
+            <input type="file" name="photo" class="form-control" style="max-width:190px" required>
+            <input type="text"  name="caption"  placeholder="Caption (optional)"
+                   class="form-control" style="max-width:230px">
+            <input type="text"  name="keywords" placeholder="Keywords (optional)"
+                   class="form-control" style="max-width:230px">
+            <button class="btn btn-danger">Upload</button>
+          </form>
         {% else %}
-        <!-- Search Form -->
-        <form
-          method="get"
-          class="mb-4 d-flex justify-content-center align-items-center gap-2 flex-wrap"
-        >
-          <input
-            type="text"
-            name="search"
-            placeholder="Search by name or title"
-            class="form-control"
-            style="max-width: 300px"
-            value="{{ search_query }}"
-          />
-          <input type="submit" value="Search" class="btn btn-primary" />
-        </form>
+          <!-- Search form -->
+          <form method="get"
+                class="d-flex justify-content-center align-items-center gap-2 flex-wrap mb-3">
+            <input type="text" name="search"
+                   placeholder="Search by keyword or caption"
+                   class="form-control" style="max-width:300px"
+                   value="{{ search_query }}">
+            <button class="btn btn-primary">Search</button>
+          </form>
         {% endif %}
       </div>
 
-      <!-- Image Gallery -->
+      <!-- Gallery -->
       <div class="row py-4">
         {% for x in img %}
-        <div class="col-sm-6 col-md-4 mb-4">
-          <div class="card h-100 shadow-sm">
-            <img
-              src="{{ x.photo.url }}"
-              alt="Uploaded Photo"
-              class="card-img-top"
-              style="object-fit: cover; height: 200px"
-            />
-            <div class="card-footer">
-              <small class="text-muted">{{ x.date }}</small>
-              <br />
-              <a
-                href="{{ x.photo.url }}"
-                download
-                class="btn btn-sm btn-primary mt-2"
-              >
-                Download
-              </a>
+          <div class="col-sm-6 col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+              <img src="{{ x.photo.url }}" alt="Image"
+                   class="card-img-top" style="object-fit:cover; height:200px">
+              <div class="card-body">
+                {% if x.caption %}
+                  <p class="card-text mb-1">{{ x.caption }}</p>
+                {% endif %}
+                {% if x.keywords %}
+                  <p class="card-text">
+                    {% if request.user.is_authenticated %}
+                    <small class="text-muted">Keywords: {{ x.keywords }}</small>
+                    {% endif %}
+                  </p>
+                {% endif %}
+                <p class="card-text">
+                  {% if request.user.is_authenticated %}
+                  <small class="text-muted">Uploaded by: {{ x.user.username }}</small>
+                  {% endif %}
+                </p>
+              </div>
+              <div class="card-footer d-flex justify-content-between align-items-center">
+                <small class="text-muted">{{ x.date|date:"M d, Y H:i" }}</small>
+                <a href="{{ x.photo.url }}" download class="btn btn-sm btn-primary">Download</a>
+              </div>
             </div>
           </div>
-        </div>
         {% empty %}
-        <p class="text-center">No photos uploaded yet.</p>
+          <p class="text-center">No photos uploaded yet.</p>
         {% endfor %}
       </div>
     </div>
-    <!-- End of Main Container -->
 
-    <!-- Optional Footer -->
     {% block footer %}{% endblock %}
 
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap Bundle JS -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
+      crossorigin="anonymous">
+    </script>
   </body>
   {% endblock %}
 </html>
