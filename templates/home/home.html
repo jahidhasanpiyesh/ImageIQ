@@ -73,8 +73,10 @@
               <img src="{{ x.photo.url }}" alt="Image"
                    class="card-img-top" style="object-fit:cover; height:200px">
               <div class="card-body">
+                {% if request.user.is_authenticated %}
                 {% if x.caption %}
                   <p class="card-text mb-1">{{ x.caption }}</p>
+                {% endif %}
                 {% endif %}
                 {% if x.keywords %}
                   <p class="card-text">
