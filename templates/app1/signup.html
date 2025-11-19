@@ -1,0 +1,52 @@
+{% extends 'app1/login.html' %}
+{% load static %}
+{% block link %}
+<!-- Linking external CSS for styling -->
+<link rel="stylesheet" href="{% static 'app1/signupuser.css' %}" />
+{% endblock %}
+{% block title %}
+<!-- Page title -->
+<title>Sign-Up</title>
+{% endblock %}
+
+{% block users %}
+<!-- Signup Form Section -->
+<div class="container">
+  <div class="registration form">
+    <header>Signup</header>
+
+    <!-- Message Display -->
+    {% if messages %}
+      <div class="alert-container alert-danger">
+        {% for message in messages %}
+          <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <form action="#" method="post">
+      {% csrf_token %}
+      <!-- Username Input -->
+      <input type="text" name="username" placeholder="Enter your username" required>
+      <!-- Email Input -->
+      <input type="email" name="email" placeholder="Enter your email" required>
+      <!-- Create Password -->
+      <input type="password" name="password1" placeholder="Create a password" required>
+      <!-- Confirm Password -->
+      <input type="password" name="password2" placeholder="Confirm your password" required>
+      <!-- Signup Button -->
+      <input type="submit" class="button" value="Signup">
+    </form>
+
+    <!-- Link to toggle back to Login form -->
+    <div class="signup">
+      <span class="signup">
+        Already have an account?
+        <a href="{% url 'login' %}">Login</a>
+      </span>
+    </div>
+  </div>
+</div>
+{% endblock %}

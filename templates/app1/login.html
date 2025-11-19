@@ -1,0 +1,65 @@
+{% extends 'app1/home.html' %}
+{% load static %}
+
+{% block link %}
+<!-- Linking external CSS for styling -->
+<link rel="stylesheet" href="{% static 'app1/login.css' %}" />
+{% endblock %}
+
+{% block title %}
+<!-- Page title -->
+<title>Login-Up</title>
+{% endblock %}
+
+{% block body %}
+<!-- Main container for login and registration forms -->
+<div class="container">
+
+    <!-- Back to Home Button (visible to guide users back) -->
+    <div style="margin: 20px 0;">
+        <a href="{% url 'home' %}" class="btn btn-secondary">&larr; Back to Home</a>
+    </div>
+
+    <!-- Hidden checkbox for toggling between login and signup forms -->
+    <input type="checkbox" id="check">
+
+    {% block users %}
+    <!-- Login Form Section -->
+    <div class="login form">
+        <header>Login</header>
+
+        <!-- Message Display -->
+        {% if messages %}
+        <div class="alert-container alert-danger">
+            {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- Login Form -->
+        <!-- The form submits to the same URL, handled by the view -->
+        <form action="#" method="post">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Enter your username" required>
+            <input type="password" name="password" placeholder="Enter your password" required>
+            <input type="submit" class="button" value="Login">
+        </form>
+
+        <!-- Link to toggle to Signup form -->
+        <div class="signup">
+            <span class="signup">
+                Don't have an account?
+                <!-- This label triggers the checkbox to show the signup form -->
+                <a href="{% url 'signup' %}">Signup</a>
+            </span>
+        </div>
+    {% endblock %}
+    </div>
+</div>
+
+<!-- Linking JavaScript file (if required for toggle/animation logic) -->
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock %}
