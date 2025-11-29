@@ -1,4 +1,4 @@
-# ImageIQ AI Project
+# ImageIQ AI Project --
 
 **ImageIQ** is an web application for image processing and analysis. It allows users to upload images, apply transformations, and extract meaningful insights efficiently.
 
