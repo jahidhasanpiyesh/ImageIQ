@@ -87,5 +87,10 @@ This project is licensed under the MIT License.
 ```bash
 zip -r ImageIQ.zip ImageIQ/
 ```
-**Author:** Md Jahid Hasan – Python Backend Developer | Open to Collaboration  
-**Contact / Portfolio:** [https://jahidhasanpiyesh.github.io/portfolio/index.html]   
+
+## 👤 Author
+
+- Developer: Md Jahid Hasan  
+- Email: jahidhasanpiyesh@gmail.com  
+- LinkedIn: [https://www.linkedin.com/in/md-jahid-hasan-9418b9298](https://www.linkedin.com/in/md-jahid-hasan-9418b9298)  
+- Portfolio: [https://jahidhasanpiyesh.github.io/](https://jahidhasanpiyesh.github.io/)  
